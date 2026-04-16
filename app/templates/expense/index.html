@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}所有明細 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="brand-font">所有收支明細</h2>
+    </div>
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <a href="{{ url_for('expense.add') }}" class="btn btn-primary-custom">
+            <i class="bi bi-plus-lg me-1"></i>新增紀錄
+        </a>
+    </div>
+</div>
+
+<div class="glass-card overflow-hidden">
+    {% if expenses %}
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead style="background: rgba(0,0,0,0.2);">
+                <tr>
+                    <th class="px-4 py-3 border-0">日期</th>
+                    <th class="py-3 border-0">分類</th>
+                    <th class="py-3 border-0">備註</th>
+                    <th class="py-3 border-0 text-end">金額</th>
+                    <th class="px-4 py-3 border-0 text-center">管理選項</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in expenses %}
+                <tr>
+                    <td class="px-4 py-3 text-muted">{{ e.date }}</td>
+                    <td class="py-3">
+                        <span class="badge rounded-pill {% if e.category_type == 'income' %}bg-success{% else %}bg-danger{% endif %} bg-opacity-75 px-3 py-2 fw-normal">
+                            {{ e.category_name }}
+                        </span>
+                    </td>
+                    <td class="py-3 text-muted small">{{ e.note or '-' }}</td>
+                    <td class="py-3 text-end fs-5 fw-bold {% if e.category_type == 'income' %}text-income{% else %}text-expense{% endif %}">
+                        ${{ "{:,.0f}".format(e.amount) }}
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                        <a href="{{ url_for('expense.edit', id=e.id) }}" class="btn btn-sm btn-outline-info rounded px-2 py-1 me-1">
+                            <i class="bi bi-pencil px-1"></i>
+                        </a>
+                        <form method="POST" action="{{ url_for('expense.delete', id=e.id) }}" class="d-inline" onsubmit="return confirm('確定要永久刪除這筆紀錄嗎？');">
+                            <button type="submit" class="btn btn-sm btn-danger-custom rounded px-2 py-1">
+                                <i class="bi bi-trash px-1"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="p-5 text-center text-muted">
+         <i class="bi bi-piggy-bank display-1 mb-3 opacity-25"></i>
+         <p class="fs-4">您的帳簿目前是空的喔。</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

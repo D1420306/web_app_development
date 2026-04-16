@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}儀表板 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+            <div class="mb-3 mb-md-0">
+                <h1 class="brand-font display-6">您好, {{ g.user.username }}! 👋</h1>
+                <p class="text-muted fs-5 mb-0">您在 {{ current_month }} 的收支概況</p>
+            </div>
+            <a href="{{ url_for('expense.add') }}" class="btn btn-primary-custom btn-lg shadow-lg">
+                <i class="bi bi-pencil-square me-2"></i>速記一筆
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100 position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                        <i class="bi bi-graph-up-arrow display-4 text-success"></i>
+                    </div>
+                    <h5 class="text-muted mb-3">當月總收入</h5>
+                    <h2 class="display-4 text-income brand-font fw-bold">${{ "{:,.0f}".format(summary['income']) }}</h2>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100 position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                        <i class="bi bi-graph-down-arrow display-4 text-danger"></i>
+                    </div>
+                    <h5 class="text-muted mb-3">當月總支出</h5>
+                    <h2 class="display-4 text-expense brand-font fw-bold">${{ "{:,.0f}".format(summary['expense']) }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="brand-font">近期收支紀錄</h3>
+            <a href="{{ url_for('expense.index') }}" class="text-muted text-decoration-none">
+                檢視全部 <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="glass-card overflow-hidden">
+            {% if recent_expenses %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead style="background: rgba(0,0,0,0.2);">
+                        <tr>
+                            <th class="px-4 py-3 border-0">日期</th>
+                            <th class="py-3 border-0">分類</th>
+                            <th class="py-3 border-0 text-end">金額</th>
+                            <th class="px-4 py-3 border-0 text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in recent_expenses %}
+                        <tr>
+                            <td class="px-4 py-3 text-muted">{{ expense.date }}</td>
+                            <td class="py-3">
+                                <span class="badge rounded-pill {% if expense.category_type == 'income' %}bg-success{% else %}bg-danger{% endif %} bg-opacity-75 px-3 py-2 fw-normal">
+                                    {{ expense.category_name }}
+                                </span>
+                            </td>
+                            <td class="py-3 text-end fs-5 fw-bold {% if expense.category_type == 'income' %}text-income{% else %}text-expense{% endif %}">
+                                ${{ "{:,.0f}".format(expense.amount) }}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <a href="{{ url_for('expense.edit', id=expense.id) }}" class="btn btn-sm btn-outline-info rounded px-2 py-1" title="編輯">
+                                    <i class="bi bi-pencil px-1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-5 text-center text-muted">
+                <i class="bi bi-wallet2 display-1 mb-3 opacity-25"></i>
+                <h4>目前還沒有任何紀錄</h4>
+                <p>點擊右上方「速記一筆」開始您的第一筆記帳吧！</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

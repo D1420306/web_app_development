@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}免費註冊 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="glass-card p-5 text-center">
+            <h2 class="mb-4 brand-font text-secondary">建立您的專屬帳號</h2>
+            <form method="POST" action="{{ url_for('auth.register') }}">
+                <div class="mb-3 text-start">
+                    <label for="username" class="form-label text-muted">稱呼 (Username)</label>
+                    <input type="text" class="form-control form-control-lg" id="username" name="username" required placeholder="我們會這樣稱呼您">
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="email" class="form-label text-muted">電子信箱 (Email)</label>
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" required placeholder="name@example.com">
+                </div>
+                <div class="mb-4 text-start">
+                    <label for="password" class="form-label text-muted">設定密碼</label>
+                    <input type="password" class="form-control form-control-lg" id="password" name="password" required placeholder="請設定高強度密碼">
+                </div>
+                <button type="submit" class="btn btn-primary-custom w-100 py-2 fs-5 mb-3" style="background: linear-gradient(135deg, var(--secondary), var(--primary));"><i class="bi bi-person-plus-fill me-2"></i>完成註冊</button>
+                <div class="mt-3">
+                    <span class="text-muted">已經有帳號了嗎？</span> 
+                    <a href="{{ url_for('auth.login') }}" class="text-info text-decoration-none fw-bold">返回登入</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

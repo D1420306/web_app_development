@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}新增紀錄 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="brand-font">新增一筆紀錄</h2>
+            <a href="{{ url_for('expense.index') }}" class="btn btn-outline-custom btn-sm"><i class="bi bi-arrow-left me-1"></i>返回清單</a>
+        </div>
+        
+        <div class="glass-card p-4 p-md-5">
+            <form method="POST" action="{{ url_for('expense.add') }}">
+                <div class="mb-4">
+                    <label for="date" class="form-label text-muted">消費日期 <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control form-control-lg" id="date" name="date" required value="">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="category_id" class="form-label text-muted">選擇分類 <span class="text-danger">*</span></label>
+                    <select class="form-select form-select-lg" id="category_id" name="category_id" required>
+                        <option value="" disabled selected>請為它指定一個分類標籤...</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}">
+                            {% if cat.type == 'income' %}🟢 [收入]{% else %}🔴 [支出]{% endif %} {{ cat.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="amount" class="form-label text-muted">總金額 <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted" style="border-color: var(--border);"><i class="bi bi-currency-dollar"></i></span>
+                        <input type="number" step="0.01" min="0" class="form-control border-start-0" style="padding-left:0;" id="amount" name="amount" required placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="note" class="form-label text-muted">備註說明 (選填)</label>
+                    <textarea class="form-control" id="note" name="note" rows="3" placeholder="例如：跟朋友聚餐、買了喜歡的書..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom w-100 py-3 fs-5"><i class="bi bi-check2-circle me-2"></i>確認紀錄防呆儲存</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // 自動填入今日日期以提升 UX
+    document.getElementById('date').valueAsDate = new Date();
+</script>
+{% endblock %}

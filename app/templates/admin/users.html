@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}後台中心 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+        <h2 class="brand-font mb-4 text-warning"><i class="bi bi-shield-lock me-2"></i>系統管理員後台</h2>
+        <div class="glass-card p-4 p-md-5">
+            <h5 class="text-white-50 border-bottom border-secondary pb-3 mb-4">全站註冊會員清單</h5>
+            
+            <div class="table-responsive mt-4">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="border-secondary text-white-50 py-3">系統 UID</th>
+                            <th class="border-secondary text-white-50 py-3">稱呼 (Username)</th>
+                            <th class="border-secondary text-white-50 py-3">安全聯絡信箱</th>
+                            <th class="border-secondary text-white-50 py-3">身份標籤</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td class="py-3 text-muted">#{{ user.id }}</td>
+                            <td class="py-3 text-white fw-bold">{{ user.username }}</td>
+                            <td class="py-3 text-info">{{ user.email }}</td>
+                            <td class="py-3">
+                                {% if user.role == 'admin' %}
+                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill"><i class="bi bi-star-fill me-1"></i> Admin</span>
+                                {% else %}
+                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill opacity-75">一般會員</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

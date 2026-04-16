@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}分類管理 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <h2 class="brand-font mb-4">分類管理 (標籤)</h2>
+        
+        <div class="row g-4">
+            <!-- 新增分類卡片 -->
+            <div class="col-12 col-md-5">
+                <div class="glass-card p-4">
+                    <h4 class="brand-font mb-3">建立新分類</h4>
+                    <form method="POST" action="{{ url_for('category.add') }}">
+                        <div class="mb-3">
+                            <label class="form-label text-muted">歸屬類型</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type_expense" value="expense" checked>
+                                    <label class="form-check-label text-expense fw-bold" for="type_expense">支出</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type_income" value="income">
+                                    <label class="form-check-label text-income fw-bold" for="type_income">收入</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="name" class="form-label text-muted">分類名稱</label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" required placeholder="如：水電費、交通費、薪水">
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2"><i class="bi bi-tag me-2"></i>新增標籤</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 分類列表 -->
+            <div class="col-12 col-md-7">
+                <div class="glass-card overflow-hidden h-100">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead style="background: rgba(0,0,0,0.2);">
+                                <tr>
+                                    <th class="px-4 py-3 border-0">類別</th>
+                                    <th class="py-3 border-0">名稱</th>
+                                    <th class="py-3 border-0">類型</th>
+                                    <th class="px-4 py-3 border-0 text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in categories %}
+                                <tr>
+                                    <td class="px-4 py-3 align-middle">
+                                        {% if cat.user_id is none %}
+                                        <span class="badge bg-secondary mb-0">系統預設</span>
+                                        {% else %}
+                                        <span class="badge bg-info text-dark mb-0">我的自訂</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-3 align-middle text-white fw-bold">{{ cat.name }}</td>
+                                    <td class="py-3 align-middle">
+                                        {% if cat.type == 'income' %}
+                                        <span class="text-income"><i class="bi bi-circle-fill me-1 small"></i>收入</span>
+                                        {% else %}
+                                        <span class="text-expense"><i class="bi bi-circle-fill me-1 small"></i>支出</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-4 py-3 text-center align-middle">
+                                        {% if cat.user_id is not none %}
+                                        <form method="POST" action="{{ url_for('category.delete', id=cat.id) }}" class="d-inline" onsubmit="return confirm('刪除此分類之前請確認該分類底下的帳目是否已清理。確定刪除？');">
+                                            <button type="submit" class="btn btn-sm btn-danger-custom rounded px-2 py-1">
+                                                <i class="bi bi-trash"></i> 移除
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <button class="btn btn-sm btn-outline-secondary rounded px-2 py-1 disabled" title="不可刪除預設分類" style="opacity: 0.3">
+                                            <i class="bi bi-shield-lock-fill"></i> 保護中
+                                        </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

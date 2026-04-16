@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}分析報表 - AntiMoney{% endblock %}
+{% block content %}
+<div class="row mb-5 justify-content-center">
+    <div class="col-12 col-lg-8">
+        <h2 class="brand-font mb-4 text-center">月份綜合統計報表</h2>
+        
+        <div class="glass-card p-4 p-md-5">
+            <!-- 簡易的年月切換表單 -->
+            <form method="GET" action="{{ url_for('expense.reports') }}" class="mb-5">
+                <div class="row g-2 justify-content-center align-items-end">
+                    <div class="col-auto">
+                        <label for="month" class="form-label text-muted">要查詢哪個月呢？</label>
+                        <input type="month" class="form-control form-control-lg" id="month" name="month" value="{{ selected_month }}" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-custom btn-lg"><i class="bi bi-search me-2"></i>分析</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-6">
+                    <div class="p-4 rounded text-center position-relative overflow-hidden" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
+                        <i class="bi bi-piggy-bank position-absolute top-50 start-50 translate-middle opacity-25" style="font-size: 5rem; color:#10b981;"></i>
+                        <p class="text-muted mb-1 fs-5 position-relative">當月總收入</p>
+                        <h2 class="text-income brand-font display-5 position-relative">${{ "{:,.0f}".format(report_data['income']) }}</h2>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 rounded text-center position-relative overflow-hidden" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);">
+                        <i class="bi bi-receipt-cutoff position-absolute top-50 start-50 translate-middle opacity-25" style="font-size: 5rem; color:#ef4444;"></i>
+                        <p class="text-muted mb-1 fs-5 position-relative">當月總支出</p>
+                        <h2 class="text-expense brand-font display-5 position-relative">${{ "{:,.0f}".format(report_data['expense']) }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 可視化比例長條圖 -->
+            {% set total = report_data['income'] + report_data['expense'] %}
+            {% if total > 0 %}
+            <div class="mt-5 pt-3 border-top border-secondary">
+                <p class="text-center text-white-50 mb-3 fs-5">收支比重圖</p>
+                <div class="progress shadow" style="height: 40px; background: rgba(255,255,255,0.05); border-radius: 20px;">
+                    {% set income_pct = (report_data['income'] / total) * 100 %}
+                    {% set expense_pct = (report_data['expense'] / total) * 100 %}
+                    <div class="progress-bar bg-success fs-6 fw-bold" role="progressbar" style="width: {{ income_pct }}%">
+                        {% if income_pct > 10 %}{{ "%.1f"|format(income_pct) }}% 收入{% endif %}
+                    </div>
+                    <div class="progress-bar bg-danger fs-6 fw-bold" role="progressbar" style="width: {{ expense_pct }}%">
+                        {% if expense_pct > 10 %}{{ "%.1f"|format(expense_pct) }}% 支出{% endif %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="mt-5 text-center text-muted">
+                本月份沒有任何活動紀錄。
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

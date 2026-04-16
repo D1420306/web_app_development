@@ -1,0 +1,187 @@
+/* 專屬高級暗黑系設計風格: Glassmorphism + Dynamic Gradients */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary: #ec4899;
+  --bg-color: #0f172a;
+  --surface: rgba(30, 41, 59, 0.7);
+  --surface-hover: rgba(30, 41, 59, 0.9);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-font {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+/* Glassmorphism 核心元件 */
+.glass-card {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* NavBar 導航 */
+.glass-nav {
+  background: rgba(15, 23, 42, 0.8) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, 
+.navbar-dark .navbar-nav .nav-link.active {
+    color: var(--text-main);
+}
+
+/* 表單控制項 */
+.form-control, .form-select {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+  color: white;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+option {
+  background: var(--bg-color);
+  color: white;
+}
+
+/* 按鈕美學 */
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+  color: white;
+}
+
+.btn-danger-custom {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.btn-danger-custom:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.btn-outline-custom {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-custom:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 表格系統 */
+.table {
+  color: var(--text-main);
+  --bs-table-bg: transparent;
+}
+
+.table td, .table th {
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: scale(1.01);
+}
+
+/* 全域提示框 (Flash Messages) */
+.toast-container {
+    z-index: 1060;
+}
+
+.alert-glass {
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--primary);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+}
+
+.alert-glass.alert-danger {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+}
+
+.alert-glass.alert-success {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
+}
+
+.alert-glass.alert-warning {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: #f59e0b;
+}
+
+/* 文字顏色輔助工具 */
+.text-income { color: #10b981; } /* 綠色 */
+.text-expense { color: #ef4444; } /* 紅色 */
